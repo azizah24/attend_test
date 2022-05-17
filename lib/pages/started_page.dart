@@ -1,4 +1,6 @@
+import 'package:attend_test/database/database_helper_lokasi.dart';
 import 'package:attend_test/database/database_helper_user.dart';
+import 'package:attend_test/model/model_data_lokasi.dart';
 import 'package:attend_test/model/model_user.dart';
 import 'package:attend_test/pages/login.dart';
 import 'package:attend_test/theme.dart';
@@ -18,6 +20,11 @@ class _StartedPaageState extends State<StartedPaage> {
         id: 'azizah',
         password: '123456',
         jabatan: 'Developer'));
+    await DatabaseHelperLokasi().addDataUser(ModelLokasi(
+      nama_alamat: 'Kantor',
+      lat: -6.175372,
+      long: 106.827194,
+    ));
   }
 
   @override

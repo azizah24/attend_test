@@ -1,5 +1,10 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:attend_test/database/database_helper_absen.dart';
+import 'package:attend_test/database/database_helper_lokasi.dart';
+import 'package:attend_test/model/model_data_absen.dart';
+import 'package:attend_test/model/model_data_lokasi.dart';
 import 'package:attend_test/pages/started_page.dart';
 import 'package:attend_test/theme.dart';
 import 'package:flutter/material.dart';
@@ -8,14 +13,16 @@ import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   dynamic dataUser;
+  dynamic modelLokasi;
 
-  HomePage({this.dataUser});
+  HomePage({this.dataUser, this.modelLokasi});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  List<ModelDataAbsen>? modelAbsen;
   String timeString = '';
   String date = '';
   Timer? timer;
@@ -26,6 +33,7 @@ class _HomePageState extends State<HomePage> {
   String id_condition = '';
   Position? _currentPosition;
   String currentLoct = '';
+  var hasil;
   var day,
       hour,
       min,
@@ -46,6 +54,15 @@ class _HomePageState extends State<HomePage> {
       endTimeInt,
       todayTimeInt,
       count;
+
+  calculateDistance(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    return 1000 * 12742 * asin(sqrt(a));
+  }
 
   void getTime() {
     final String formatDate =
@@ -340,7 +357,28 @@ class _HomePageState extends State<HomePage> {
                   ? InkWell(
                       onTap: () async {
                         try {
-                          setState(() async {});
+                          setState(() async {
+                            print(startTime);
+                            print(widget.modelLokasi?.lat);
+                            var _distanceBetweenLastTwoLocations =
+                                Geolocator.distanceBetween(
+                              widget.modelLokasi?.lat,
+                              widget.modelLokasi?.long,
+                              _currentPosition!.latitude,
+                              _currentPosition!.longitude,
+                            );
+                            print(_distanceBetweenLastTwoLocations);
+                            if (_distanceBetweenLastTwoLocations > 50) {
+                              loadingAlert(
+                                  'Anda tidak dikantor\nKekantor dulu ya..',
+                                  false,
+                                  false);
+                            } else {
+                              var timenow = DateTime.now();
+                              startTime = DateFormat.Hm().format(timenow);
+                              loadingAlert('Sukses absen', true, false);
+                            }
+                          });
                         } catch (e) {}
                       },
                       child: Container(
@@ -373,7 +411,28 @@ class _HomePageState extends State<HomePage> {
               startTime != '--:--' && endTime == '--:--'
                   ? InkWell(
                       onTap: () async {
-                        try {} catch (e) {}
+                        try {
+                          setState(() async {
+                            var _distanceBetweenLastTwoLocations =
+                                Geolocator.distanceBetween(
+                              widget.modelLokasi?.lat,
+                              widget.modelLokasi?.long,
+                              _currentPosition!.latitude,
+                              _currentPosition!.longitude,
+                            );
+                            print(_distanceBetweenLastTwoLocations);
+                            if (_distanceBetweenLastTwoLocations > 50) {
+                              loadingAlert(
+                                  'Anda tidak dikantor\nKekantor dulu ya..',
+                                  false,
+                                  false);
+                            } else {
+                              var timenow = DateTime.now();
+                              endTime = DateFormat.Hm().format(timenow);
+                              loadingAlert('Sukses absen', true, false);
+                            }
+                          });
+                        } catch (e) {}
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.6,
@@ -400,7 +459,26 @@ class _HomePageState extends State<HomePage> {
                   ? InkWell(
                       onTap: () async {
                         try {
-                          setState(() async {});
+                          setState(() async {
+                            var _distanceBetweenLastTwoLocations =
+                                Geolocator.distanceBetween(
+                              widget.modelLokasi?.lat,
+                              widget.modelLokasi?.long,
+                              _currentPosition!.latitude,
+                              _currentPosition!.longitude,
+                            );
+                            print(_distanceBetweenLastTwoLocations);
+                            if (_distanceBetweenLastTwoLocations > 50) {
+                              loadingAlert(
+                                  'Anda tidak dikantor\nKekantor dulu ya..',
+                                  false,
+                                  false);
+                            } else {
+                              var timenow = DateTime.now();
+                              endTime = DateFormat.Hm().format(timenow);
+                              loadingAlert('Sukses absen', true, false);
+                            }
+                          });
                         } catch (e) {}
                       },
                       child: Container(
@@ -429,5 +507,74 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  loadingAlert(title, status, loading) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) => StatefulBuilder(
+                builder: (BuildContext context, StateSetter stateSetter) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                contentPadding: EdgeInsets.only(top: 0.0, bottom: 20),
+                content: Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Divider(
+                        color: Colors.grey,
+                        height: 1.0,
+                      ),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(19.0),
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            status != null
+                                ? status == true
+                                    ? Icon(
+                                        Icons.check,
+                                        size: 30,
+                                      )
+                                    : Icon(
+                                        Icons.clear,
+                                        size: 30,
+                                      )
+                                : Container(),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                              '$title',
+                              style: blacklight400,
+                            ),
+                            SizedBox(
+                              height: 15,
+                            ),
+                            loading == true
+                                ? CircularProgressIndicator(
+                                    color: yellow200,
+                                  )
+                                : Container(),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }));
   }
 }

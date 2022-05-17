@@ -1,4 +1,6 @@
+import 'package:attend_test/database/database_helper_lokasi.dart';
 import 'package:attend_test/database/database_helper_user.dart';
+import 'package:attend_test/model/model_data_lokasi.dart';
 import 'package:attend_test/model/model_user.dart';
 import 'package:attend_test/pages/home_page.dart';
 import 'package:attend_test/theme.dart';
@@ -18,9 +20,11 @@ class _LoginPageState extends State<LoginPage> {
   var res;
   List<ModelUser>? modelUser;
   bool loading = true;
+  List<ModelLokasi>? modelLokasi;
 
   callData() async {
     modelUser = await DatabaseHelperUser().fetchAllInfo();
+    modelLokasi = await DatabaseHelperLokasi().fetchAllInfo();
     setState(() {
       loading = false;
     });
@@ -249,9 +253,12 @@ class _LoginPageState extends State<LoginPage> {
                       if (userid.text == modelUser?[0].id &&
                           password.text == modelUser?[0].password) {
                         setState(() {
-                            Navigator.of(context)
-                              .pushReplacement(MaterialPageRoute(builder: (context) => HomePage(dataUser: modelUser?[0])));
-
+                          Navigator.of(context)
+                              .pushReplacement(MaterialPageRoute(
+                                  builder: (context) => HomePage(
+                                        dataUser: modelUser?[0],
+                                        modelLokasi: modelLokasi?[0],
+                                      )));
                         });
                       } else {
                         setState(() {

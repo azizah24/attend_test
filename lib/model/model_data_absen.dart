@@ -1,5 +1,6 @@
 class ModelDataAbsen {
-  String mulai, akhir, lat, long;
+  String mulai, akhir;
+  double lat, long;
 
   ModelDataAbsen(
       {required this.mulai,

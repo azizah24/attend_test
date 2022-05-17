@@ -16,11 +16,11 @@ class DatabaseAbsen {
     if (db != null) {
       return db;
     }
-    db = await initdb_User();
+    db = await initdb_Absen();
     return db;
   }
 
-  Future<Database> initdb_User() async {
+  Future<Database> initdb_Absen() async {
     Directory directory = await getApplicationDocumentsDirectory();
     String dbpath = join(directory.path, 'db_absen.db');
     var opendb = await openDatabase(dbpath, version: versi,
