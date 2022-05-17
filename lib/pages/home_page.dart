@@ -355,31 +355,28 @@ class _HomePageState extends State<HomePage> {
               ),
               startTime == '--:--'
                   ? InkWell(
-                      onTap: () async {
-                        try {
-                          setState(() async {
-                            print(startTime);
-                            print(widget.modelLokasi?.lat);
-                            var _distanceBetweenLastTwoLocations =
-                                Geolocator.distanceBetween(
-                              widget.modelLokasi?.lat,
-                              widget.modelLokasi?.long,
-                              _currentPosition!.latitude,
-                              _currentPosition!.longitude,
-                            );
-                            print(_distanceBetweenLastTwoLocations);
-                            if (_distanceBetweenLastTwoLocations > 50) {
-                              loadingAlert(
-                                  'Anda tidak dikantor\nKekantor dulu ya..',
-                                  false,
-                                  false);
-                            } else {
-                              var timenow = DateTime.now();
-                              startTime = DateFormat.Hm().format(timenow);
-                              loadingAlert('Sukses absen', true, false);
-                            }
-                          });
-                        } catch (e) {}
+                      onTap: () {
+                        setState(() {
+                          var _distanceBetweenLastTwoLocations =
+                              Geolocator.distanceBetween(
+                            widget.modelLokasi?.lat,
+                            widget.modelLokasi?.long,
+                            _currentPosition!.latitude,
+                            _currentPosition!.longitude,
+                          );
+                          print(_distanceBetweenLastTwoLocations);
+                          if (_distanceBetweenLastTwoLocations > 50) {
+                            loadingAlert(
+                                context,
+                                'Anda tidak dikantor\nKekantor dulu ya..',
+                                false,
+                                false);
+                          } else {
+                            var timenow = DateTime.now();
+                            startTime = DateFormat.Hm().format(timenow);
+                            loadingAlert(context, 'Sukses absen', true, false);
+                          }
+                        });
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.6,
@@ -410,29 +407,28 @@ class _HomePageState extends State<HomePage> {
               ),
               startTime != '--:--' && endTime == '--:--'
                   ? InkWell(
-                      onTap: () async {
-                        try {
-                          setState(() async {
-                            var _distanceBetweenLastTwoLocations =
-                                Geolocator.distanceBetween(
-                              widget.modelLokasi?.lat,
-                              widget.modelLokasi?.long,
-                              _currentPosition!.latitude,
-                              _currentPosition!.longitude,
-                            );
-                            print(_distanceBetweenLastTwoLocations);
-                            if (_distanceBetweenLastTwoLocations > 50) {
-                              loadingAlert(
-                                  'Anda tidak dikantor\nKekantor dulu ya..',
-                                  false,
-                                  false);
-                            } else {
-                              var timenow = DateTime.now();
-                              endTime = DateFormat.Hm().format(timenow);
-                              loadingAlert('Sukses absen', true, false);
-                            }
-                          });
-                        } catch (e) {}
+                      onTap: () {
+                        setState(() {
+                          var _distanceBetweenLastTwoLocations =
+                              Geolocator.distanceBetween(
+                            widget.modelLokasi?.lat,
+                            widget.modelLokasi?.long,
+                            _currentPosition!.latitude,
+                            _currentPosition!.longitude,
+                          );
+                          print(_distanceBetweenLastTwoLocations);
+                          if (_distanceBetweenLastTwoLocations > 50) {
+                            loadingAlert(
+                                context,
+                                'Anda tidak dikantor\nKekantor dulu ya..',
+                                false,
+                                false);
+                          } else {
+                            var timenow = DateTime.now();
+                            endTime = DateFormat.Hm().format(timenow);
+                            loadingAlert(context, 'Sukses absen', true, false);
+                          }
+                        });
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.6,
@@ -457,29 +453,28 @@ class _HomePageState extends State<HomePage> {
                   : Container(),
               endTime != '--:--'
                   ? InkWell(
-                      onTap: () async {
-                        try {
-                          setState(() async {
-                            var _distanceBetweenLastTwoLocations =
-                                Geolocator.distanceBetween(
-                              widget.modelLokasi?.lat,
-                              widget.modelLokasi?.long,
-                              _currentPosition!.latitude,
-                              _currentPosition!.longitude,
-                            );
-                            print(_distanceBetweenLastTwoLocations);
-                            if (_distanceBetweenLastTwoLocations > 50) {
-                              loadingAlert(
-                                  'Anda tidak dikantor\nKekantor dulu ya..',
-                                  false,
-                                  false);
-                            } else {
-                              var timenow = DateTime.now();
-                              endTime = DateFormat.Hm().format(timenow);
-                              loadingAlert('Sukses absen', true, false);
-                            }
-                          });
-                        } catch (e) {}
+                      onTap: () {
+                        setState(() {
+                          var _distanceBetweenLastTwoLocations =
+                              Geolocator.distanceBetween(
+                            widget.modelLokasi?.lat,
+                            widget.modelLokasi?.long,
+                            _currentPosition!.latitude,
+                            _currentPosition!.longitude,
+                          );
+                          print(_distanceBetweenLastTwoLocations);
+                          if (_distanceBetweenLastTwoLocations > 50) {
+                            loadingAlert(
+                                context,
+                                'Anda tidak dikantor\nKekantor dulu ya..',
+                                false,
+                                false);
+                          } else {
+                            var timenow = DateTime.now();
+                            endTime = DateFormat.Hm().format(timenow);
+                            loadingAlert(context, 'Sukses absen', true, false);
+                          }
+                        });
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width * 0.6,
@@ -509,7 +504,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  loadingAlert(title, status, loading) {
+  loadingAlert(BuildContext context, title, status, loading) {
     return showDialog(
         context: context,
         builder: (BuildContext context) => StatefulBuilder(
