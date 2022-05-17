@@ -10,6 +10,7 @@ import 'package:attend_test/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:sqflite/utils/utils.dart';
 
 class HomePage extends StatefulWidget {
   dynamic dataUser;
@@ -366,15 +367,20 @@ class _HomePageState extends State<HomePage> {
                           );
                           print(_distanceBetweenLastTwoLocations);
                           if (_distanceBetweenLastTwoLocations > 50) {
-                            loadingAlert(
-                                context,
-                                'Anda tidak dikantor\nKekantor dulu ya..',
-                                false,
-                                false);
+                            setState(() {
+                              loadingAlert(
+                                  context,
+                                  'Anda tidak dikantor\nKekantor dulu ya..',
+                                  false,
+                                  false);
+                            });
                           } else {
                             var timenow = DateTime.now();
                             startTime = DateFormat.Hm().format(timenow);
-                            loadingAlert(context, 'Sukses absen', true, false);
+                            setState(() {
+                              loadingAlert(
+                                  context, 'Sukses absen', true, false);
+                            });
                           }
                         });
                       },
@@ -418,15 +424,20 @@ class _HomePageState extends State<HomePage> {
                           );
                           print(_distanceBetweenLastTwoLocations);
                           if (_distanceBetweenLastTwoLocations > 50) {
-                            loadingAlert(
-                                context,
-                                'Anda tidak dikantor\nKekantor dulu ya..',
-                                false,
-                                false);
+                            setState(() {
+                              loadingAlert(
+                                  context,
+                                  'Anda tidak dikantor\nKekantor dulu ya..',
+                                  false,
+                                  false);
+                            });
                           } else {
                             var timenow = DateTime.now();
                             endTime = DateFormat.Hm().format(timenow);
-                            loadingAlert(context, 'Sukses absen', true, false);
+                            setState(() {
+                              loadingAlert(
+                                  context, 'Sukses absen', true, false);
+                            });
                           }
                         });
                       },
@@ -464,15 +475,20 @@ class _HomePageState extends State<HomePage> {
                           );
                           print(_distanceBetweenLastTwoLocations);
                           if (_distanceBetweenLastTwoLocations > 50) {
-                            loadingAlert(
-                                context,
-                                'Anda tidak dikantor\nKekantor dulu ya..',
-                                false,
-                                false);
+                            setState(() {
+                              loadingAlert(
+                                  context,
+                                  'Anda tidak dikantor\nKekantor dulu ya..',
+                                  false,
+                                  false);
+                            });
                           } else {
                             var timenow = DateTime.now();
                             endTime = DateFormat.Hm().format(timenow);
-                            loadingAlert(context, 'Sukses absen', true, false);
+                            setState(() {
+                              loadingAlert(
+                                  context, 'Sukses absen', true, false);
+                            });
                           }
                         });
                       },
